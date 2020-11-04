@@ -447,7 +447,7 @@ func Subtract(a, b *OrderedSet) *OrderedSet {
 		} else {
 			left, right := x.Bisect(y)
 			if !left.IsEmpty() {
-				intervals = append(intervals, x)
+				intervals = append(intervals, left)
 			}
 			if right.IsEmpty() {
 				x = xit()
