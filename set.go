@@ -11,21 +11,21 @@ type OrderedSet struct {
 }
 
 // Copy returns a copy of a ordered set that without affecting the original.
-func (s *OrderedSet) Copy() *OrderedSet {
-	return &OrderedSet{append([]Interval(nil), s.intervals...)}
+func (s OrderedSet) Copy() OrderedSet {
+	return OrderedSet{append([]Interval(nil), s.intervals...)}
 }
 
 // Len returns length of intervals in this ordered set.
-func (s *OrderedSet) Len() int {
+func (s OrderedSet) Len() int {
 	return len(s.intervals)
 }
 
 // IsEmpty returns true if no intervals in this ordered set.
-func (s *OrderedSet) IsEmpty() bool {
+func (s OrderedSet) IsEmpty() bool {
 	return len(s.intervals) == 0
 }
 
-func (s *OrderedSet) Equal(x *OrderedSet) bool {
+func (s OrderedSet) Equal(x OrderedSet) bool {
 	return equalIntervals(s.intervals, x.intervals)
 }
 
@@ -41,7 +41,7 @@ func equalIntervals(s1, s2 []Interval) bool {
 	return true
 }
 
-func (s *OrderedSet) String() string {
+func (s OrderedSet) String() string {
 	n := len(s.intervals)
 	switch n {
 	case 0:
@@ -60,7 +60,7 @@ func (s *OrderedSet) String() string {
 }
 
 // Bound returns the Interval defined by the minimum and maximum values of this ordered set.
-func (s *OrderedSet) Bound() Interval {
+func (s OrderedSet) Bound() Interval {
 	n := len(s.intervals)
 	switch n {
 	case 0:
@@ -96,7 +96,7 @@ func (s *OrderedSet) searchHigh(x Interval) int {
 }
 
 // Contains returns true if x interval is completely covered by this ordered set.
-func (s *OrderedSet) Contains(x Interval) bool {
+func (s OrderedSet) Contains(x Interval) bool {
 	idx := s.searchLow(x)
 	if idx == len(s.intervals) {
 		return false
@@ -105,7 +105,7 @@ func (s *OrderedSet) Contains(x Interval) bool {
 }
 
 // Intervals returns a copy of intervals in this ordered set.
-func (s *OrderedSet) Intervals() []Interval {
+func (s OrderedSet) Intervals() []Interval {
 	return append([]Interval(nil), s.intervals...)
 }
 
@@ -113,7 +113,7 @@ func (s *OrderedSet) Intervals() []Interval {
 // this ordered set and bound.
 // If iterator returns empty Interval, the iteration is over.
 // If forward is true, the iteration from left to right.
-func (s *OrderedSet) Iterator(bound Interval, forward bool) func() Interval {
+func (s OrderedSet) Iterator(bound Interval, forward bool) func() Interval {
 	if bound.IsEmpty() {
 		return emptyIterator
 	}
@@ -393,7 +393,7 @@ func (s *OrderedSet) Remove(x Interval) bool {
 }
 
 // Union returns an ordered set containing all intervals in a or b.
-func Union(a, b *OrderedSet) *OrderedSet {
+func Union(a, b OrderedSet) OrderedSet {
 	if a.Len() < b.Len() {
 		a, b = b, a
 	}
@@ -410,7 +410,7 @@ func Union(a, b *OrderedSet) *OrderedSet {
 }
 
 // Intersect returns an ordered set containing all intervals of a that also belong to b.
-func Intersect(a, b *OrderedSet) *OrderedSet {
+func Intersect(a, b OrderedSet) OrderedSet {
 	var intervals []Interval
 	xit, yit := a.Iterator(b.Bound(), true), b.Iterator(a.Bound(), true)
 	x, y := xit(), yit()
@@ -432,11 +432,11 @@ func Intersect(a, b *OrderedSet) *OrderedSet {
 			}
 		}
 	}
-	return &OrderedSet{intervals: intervals}
+	return OrderedSet{intervals: intervals}
 }
 
 // Subtract returns an ordered set containing all intervals in a but not in b.
-func Subtract(a, b *OrderedSet) *OrderedSet {
+func Subtract(a, b OrderedSet) OrderedSet {
 	var intervals []Interval
 	xit, yit := a.Iterator(a.Bound(), true), b.Iterator(a.Bound(), true)
 	x, y := xit(), yit()
@@ -457,12 +457,12 @@ func Subtract(a, b *OrderedSet) *OrderedSet {
 			}
 		}
 	}
-	return &OrderedSet{intervals: intervals}
+	return OrderedSet{intervals: intervals}
 }
 
 // Difference returns an ordered set containing all intervals in either of a and b,
 // but not in their intersection.
-func Difference(a, b *OrderedSet) *OrderedSet {
+func Difference(a, b OrderedSet) OrderedSet {
 	var intervals []Interval
 	push := func(x Interval) {
 		intervals = adjoinOrAppend(intervals, x)
@@ -510,5 +510,5 @@ func Difference(a, b *OrderedSet) *OrderedSet {
 			}
 		}
 	}
-	return &OrderedSet{intervals: intervals}
+	return OrderedSet{intervals: intervals}
 }

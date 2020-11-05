@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	a := &interval.OrderedSet{}
+	a := interval.OrderedSet{}
 	a.Add(interval.Interval{
 		Begin:    0,
 		IncBegin: true,
@@ -29,7 +29,7 @@ func main() {
 	})
 	fmt.Printf("a: %s\n", a)
 
-	b := &interval.OrderedSet{}
+	b := interval.OrderedSet{}
 	b.Add(interval.Interval{
 		Begin:    -4,
 		IncBegin: true,

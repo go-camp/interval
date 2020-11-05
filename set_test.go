@@ -5,9 +5,9 @@ import (
 	"testing"
 )
 
-func parseOrderedSet(s string) *OrderedSet {
+func parseOrderedSet(s string) OrderedSet {
 	if s == "" {
-		return &OrderedSet{}
+		return OrderedSet{}
 	}
 
 	var intervals []Interval
@@ -94,7 +94,7 @@ func parseOrderedSet(s string) *OrderedSet {
 			IncEnd:   true,
 		})
 	}
-	return &OrderedSet{intervals: intervals}
+	return OrderedSet{intervals: intervals}
 }
 
 func TestOrderedSet_Iterator(t *testing.T) {
